@@ -1,19 +1,33 @@
-name: e2e
-
+name: terraform
 on:
-  push:
-    branches:
-      - '*'
-
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Terraform Environment
+        default: sandbox
+        required: true
+      component:
+        description: Terraform Component
+        default: eks
+        required: true
+      action:
+        description: Terraform Action
+        default: plan
+        required: true
+      workspace:
+        description: Terraform Workspace
+        default: earnup-apps
+        required: true
 jobs:
-  kubernetes:
+  run-terraform:
+    name: Check files
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup Flux CLI
-        uses: fluxcd/flux2/action@main
-      - name: Setup Kubernetes Kind
-        uses: engineerd/setup-kind@v0.5.0
-      - name: Install Flux in Kubernetes Kind
-        run: flux install
+      - uses: actions/checkout@v3
+      - name: Checkout code
+        run: |
+          ./scripts/init-and-plan.sh \
+            -e $environment \
+            -c $component \
+            -a $action \
+            -w $workspace

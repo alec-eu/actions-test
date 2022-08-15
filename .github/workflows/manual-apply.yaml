@@ -1,15 +1,33 @@
-name: Manual Inputs
+name: terraform
 on:
   workflow_dispatch:
     inputs:
-      version:
-        description: Bump Version
-        default: v1.0.0
+      environment:
+        description: Terraform Environment
+        default: sandbox
+        required: true
+      component:
+        description: Terraform Component
+        default: eks
+        required: true
+      action:
+        description: Terraform Action
+        default: plan
+        required: true
+      workspace:
+        description: Terraform Workspace
+        default: earnup-apps
         required: true
 jobs:
-  bump-version:
-    name: Bump Package Version
+  run-terraform:
+    name: Check files
     runs-on: ubuntu-latest
     steps:
-      - name: Example variable usage
-        run: git tag ${{ github.event.inputs.version }}
+      - uses: actions/checkout@v3
+      - name: Checkout code
+        run: |
+          ./scripts/init-and-plan.sh \
+            -e $environment \
+            -c $component \
+            -a $action \
+            -w $workspace
