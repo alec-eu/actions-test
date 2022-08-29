@@ -1,6 +1,11 @@
 name: GitHub Actions Demo
 on: [push]
 jobs:
+  - uses: actions/checkout@v2
+  - name: Generate CHANGELOG
+    uses: tj-actions/github-changelog-generator@v1.14
+    with:
+      output: 'HISTORY.md'
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
@@ -15,7 +20,7 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
-  Pause:
+  Approve-Change:
     needs: Explore-GitHub-Actions
     runs-on: ubuntu-latest
     steps:
