@@ -39,12 +39,6 @@ jobs:
     needs: [Generate-History,Run-Some-Tests]
     runs-on: ubuntu-latest
     steps:
-      - run: |
-        echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-
-        git clone $GITOPS_REPO
-        cd apps/$ENVIRONMENT/$SERVICE
-        kustomize edit set image $IMAGE_REPO/$IMAGE $IMAGE_REPO/$IMAGE:$IMAGE_TAG
-        git add -A
-        git commit -m "Updated $SERVICE in $QA via Github Actions"
-        git push
+      - name: Run a multiline command
+        run: |
+          echo "🎉 The job was automatically triggered by an event."
