@@ -16,6 +16,8 @@ jobs:
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
   Pause:
+    needs: Explore-GitHub-Actions
+    runs-on: ubuntu-latest
     steps:
     - uses: trstringer/manual-approval@v1
       with:
