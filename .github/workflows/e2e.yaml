@@ -37,7 +37,7 @@ jobs:
     environment:
       name: production
     # id: deploy
-    needs: [Approve-Change]
+    needs: [Generate-History,Explore-GitHub-Actions]
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
