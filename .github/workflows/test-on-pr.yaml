@@ -1,11 +1,13 @@
 name: Test on PR
 on: [push]
+# pull_request:
 jobs:
-  Generate-History:
+  Run tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Generate CHANGELOG
-        uses: tj-actions/github-changelog-generator@v1.14
-        with:
-          output: 'HISTORY.md'
+      - name: Run unit tests
+        run: |
+          echo "🎉 The job was automatically triggered by an event."
+      - name: Publish test artifacts
+        run: |
+          echo "🎉 The job was automatically triggered by an event."
