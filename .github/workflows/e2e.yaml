@@ -9,7 +9,7 @@ jobs:
         uses: tj-actions/github-changelog-generator@v1.14
         with:
           output: 'HISTORY.md'
-  Explore-GitHub-Actions:
+  Run-Some-Tests:
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
@@ -36,8 +36,22 @@ jobs:
   Deploy-To-Production:
     environment:
       name: production
-    # id: deploy
     needs: [Generate-History,Explore-GitHub-Actions]
     runs-on: ubuntu-latest
+    env:
+      GITOPS_REPO:
+      ENVIRONMENT:
+      SERVICE:
+      IMAGE_REPO:
+      IMAGE:
+      IMAGE_TAG:
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: |
+        echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+
+        git clone $GITOPS_REPO
+        cd apps/$ENVIRONMENT/$SERVICE
+        kustomize edit set image $IMAGE_REPO/$IMAGE $IMAGE_REPO/$IMAGE:$IMAGE_TAG
+        git add -A
+        git commit -m "Updated $SERVICE in $QA via Github Actions"
+        git push
