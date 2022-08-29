@@ -36,15 +36,8 @@ jobs:
   Deploy-To-Production:
     environment:
       name: production
-    needs: [Generate-History,Explore-GitHub-Actions]
+    needs: [Generate-History,Run-Some-Tests]
     runs-on: ubuntu-latest
-    env:
-      GITOPS_REPO:
-      ENVIRONMENT:
-      SERVICE:
-      IMAGE_REPO:
-      IMAGE:
-      IMAGE_TAG:
     steps:
       - run: |
         echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
