@@ -28,6 +28,7 @@ jobs:
   Deploy To Production:
     environment:
       name: production
+    id: deploy
     needs: [Pause]
     runs-on: ubuntu-latest
     steps:
