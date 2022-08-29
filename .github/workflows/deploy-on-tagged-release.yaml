@@ -33,7 +33,7 @@ jobs:
       - name: Publish test artifacts
         run: echo "🎉 The job was automatically triggered by an event."
 
-  Deploy-To-Staging:
+  Deploy-To-Production:
     runs-on: ubuntu-latest
     needs: [Run-Integration-Tests]
     environment:
