@@ -25,9 +25,9 @@ jobs:
         approvers: alec-eu
         minimum-approvals: 1
         issue-title: "Deploying v1.3.5 to prod from staging"
-  Deploy To Production:
-    # environment:
-    #   name: production
+  Deploy-To-Production:
+    environment:
+      name: production
     # id: deploy
     needs: [Pause]
     runs-on: ubuntu-latest
