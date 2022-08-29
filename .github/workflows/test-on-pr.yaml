@@ -1,0 +1,11 @@
+name: Test on PR
+on: [push]
+jobs:
+  Generate-History:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Generate CHANGELOG
+        uses: tj-actions/github-changelog-generator@v1.14
+        with:
+          output: 'HISTORY.md'
