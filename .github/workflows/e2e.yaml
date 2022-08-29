@@ -23,16 +23,16 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
-  Approve-Change:
-    needs: Explore-GitHub-Actions
-    runs-on: ubuntu-latest
-    steps:
-    - uses: trstringer/manual-approval@v1
-      with:
-        secret: ${{ github.TOKEN }}
-        approvers: alec-eu
-        minimum-approvals: 1
-        issue-title: "Deploying v1.3.5 to prod from staging"
+  # Approve-Change:
+  #   needs: Explore-GitHub-Actions
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: trstringer/manual-approval@v1
+  #     with:
+  #       secret: ${{ github.TOKEN }}
+  #       approvers: alec-eu
+  #       minimum-approvals: 1
+  #       issue-title: "Deploying v1.3.5 to prod from staging"
   Deploy-To-Production:
     environment:
       name: production
