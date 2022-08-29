@@ -27,8 +27,8 @@ jobs:
         issue-title: "Deploying v1.3.5 to prod from staging"
   Deploy To Production:
     environment:
-      name: production_environment
-      url: https://github.com
+      name: production
+    needs: [Pause]
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
