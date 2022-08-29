@@ -25,3 +25,10 @@ jobs:
         approvers: alec-eu
         minimum-approvals: 1
         issue-title: "Deploying v1.3.5 to prod from staging"
+  Deploy To Production:
+    environment:
+      name: production_environment
+      url: https://github.com
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
