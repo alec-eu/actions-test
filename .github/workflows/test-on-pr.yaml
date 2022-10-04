@@ -1,0 +1,82 @@
+name: Test on PR
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - edited
+      - synchronize
+env:
+  AWS_REGION: us-west-2
+  AWS_DEFAULT_REGION: us-west-2
+  REPOSITORY_URI: 083372784142.dkr.ecr.us-west-2.amazonaws.com/people-service-stef
+  
+jobs:
+  Run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run unit tests
+        run: |
+          echo "🎉 The job was automatically triggered by an event."
+      - name: Publish test artifacts
+        run: |
+          echo "🎉 The job was automatically triggered by an event."
+
+  Build-image:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set Tag
+        run: echo "TAG=${GITHUB_REF##*/}" >> $GITHUB_ENV
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Create docker context
+        run: docker context create builders
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+        with:
+         version: latest
+         endpoint: builders
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-2
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - uses: KengoTODA/actions-setup-docker-compose@main
+        with:
+          version: '2.11.0'
+
+      - name: Setup SSH Keys and known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          echo "${{ secrets.SSH }}" > github_rsa
+          chmod 0400 github_rsa
+          ssh-add github_rsa
+          ls -l
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+
+      - name: Build and export to Docker
+        env:
+          DOCKER_BUILDKIT: 1
+          SSH_AUTH_SOCK: github_rsa
+        uses: docker/build-push-action@v2
+        with:
+          push: false
+          ssh: |
+            default=github_rsa
+          tags: |
+            ${{ env.REPOSITORY_URI }}:latest

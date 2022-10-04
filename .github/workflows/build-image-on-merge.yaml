@@ -1,0 +1,29 @@
+name: Build Image on Merge
+on: [push]
+jobs:
+  Run-Unit-Tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Generate CHANGELOG
+        uses: tj-actions/github-changelog-generator@v1.14
+        with:
+          output: 'HISTORY.md'
+  Build-and-Publish-Image:
+    runs-on: ubuntu-latest
+    needs: [Run-Unit-Tests]
+    steps:
+      - name: Build image
+        run: |
+          ls ${{ github.workspace }}
+      - name: Publish image
+        run: echo "🍏 This job's status is ${{ job.status }}."
+  Deploy-To-Development:
+    environment:
+      name: Development
+    needs: [Run-Unit-Tests,Build-and-Publish-Image]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update GitOps repo for Development
+        run: |
+          echo "🎉 The job was automatically triggered by an event."
